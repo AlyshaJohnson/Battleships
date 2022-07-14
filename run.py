@@ -10,24 +10,96 @@
 # Imports
 from random import randint
 
-# Named variables
-#player_name = input("Name: ")
-player_hit_count = 0
+# Global variables
+player_guess_count = 0
 player_ships_count = 5
-computer_hit_count = 0
-computer_ships_count = 0
+computer_ships_count = 5
 
-ship_board = [[" "] * 8 for x in range(8)]
-guess_board = [[" "] * 8 for i in range(8)]
+ship_type_1: ["<", ">"]
+ship_type_2: ["<", "=", ">"]
+ship_type_3: ["<", "=", "=", ">"]
 
-convert_nums_to_letters = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
+player_ship_board = [[" "] * 8 for x in range(8)]
+player_guess_board = [[" "] * 8 for i in range(8)]
+computer_ship_board = [[" "] * 8 for p in range(8)]
+computer_guess_board = [[" "] * 8 for m in range(8)]
+
+convert_nums_to_letters = {
+    "a": 0,
+    "b": 1,
+    "c": 2,
+    "d": 3,
+    "e": 4,
+    "f": 5,
+    "g": 6,
+    "h": 7
+}
 
 # Functions
-def create_computer_boards():
-    # creates computer guess and ship placement boards
+def ship_direction(row, column, direction):
+    if direction == 0:
+        ship_row_diff = row + 1
+        ship_column_diff = 0
+    elif direction == 1:
+        ship_row_diff = row - 1
+        ship_column_diff = 0
+    elif direction == 2:
+        ship_row_diff = 0
+        ship_column_diff = column + 1
+    elif direction == 3:
+        ship_row_diff = 0
+        ship_column_diff = column - 1
+    return ship_row_diff, ship_column_diff
+
+def generate_computer_ships(board):
+    # creates computer ship placement
+    for ship_type_1 in range(2):
+        #get random ship coordinates
+        ship_row, ship_column = randint(0,7), randint(0,7)
+        #get random number to generate direction of ship
+        ship_direction = randint(0,3)
+        ship_direction(ship_row, ship_column, ship_direction)
+        #check coordinate isn't already taken
+        while board[ship_row][ship_column] == "<" or "=" or ">":
+            ship_row, ship_column = get_ship_location()
+        #generates coordinates for ship_1
+        board[ship_row][ship_column] = "<"
+        board[ship_row + ship_row_diff][ship_column + ship_column_diff] = ">"
+    
+    for ship_type_2 in range(2):
+        #get random ship coordinates
+        ship_row, ship_column = randint(0,7), randint(0,7)
+        #get random number to generate direction of ship
+        ship_direction = randint(0,3)
+        ship_direction(ship_row, ship_column, ship_direction)
+        #check coordinate isn't already taken
+        while board[ship_row][ship_column] == "<" or "=" or ">":
+            ship_row, ship_column = get_ship_location()
+        #generates coordinates for ship_1
+        board[ship_row][ship_column] = "<"
+        board[ship_row + ship_row_diff][ship_column + ship_column_diff] = "="
+        board[ship_row + (ship_row_diff*2)][ship_column + (ship_column_diff*2)] = ">"
+
+    for ship_type_3 in range(1):
+        #get random ship coordinates
+        ship_row, ship_column = randint(0,7), randint(0,7)
+        #get random number to generate direction of ship
+        ship_direction = randint(0,3)
+        ship_direction(ship_row, ship_column, ship_direction)
+        #check coordinate isn't already taken
+        while board[ship_row][ship_column] == "<" or "=" or ">":
+            ship_row, ship_column = get_ship_location()
+        #generates coordinates for ship_type_3
+        board[ship_row][ship_column] = "<"
+        board[ship_row + ship_row_diff][ship_column + ship_column_diff] = "="
+        board[ship_row + (ship_row_diff*2)][ship_column + (ship_column_diff*2)] = "="
+        board[ship_row + (ship_row_diff*3)][ship_column + (ship_column_diff*3)] = ">"
+
+def place_ships(board):
+    # allows player to place ships
     pass
 
-def load_empty_player_board(board):
+def load_board(board):
     # creates blank player guess and ship placement boards
     print("  a b c d e f g h")
     print(" -----------------")
@@ -37,29 +109,40 @@ def load_empty_player_board(board):
         row_number += 1
     print(" -----------------")
 
-def place_ships():
-    # allows player to place ships
-    pass
-
 def reset_player_board():
     # allows player to reset their game board
-    pass
-
-def print_boards():
-    # prints player boards to terminal
     pass
 
 def player_guess():
     # player makes guess (hit and miss)
     pass
+    if computer_ships_count > 0:
+        computer_guess()
+    else:
+        end_game()
 
 def computer_guess():
     # computer makes guess (hit and miss)
     pass
+    if player_ships_count > 0:
+        player_guess()
+    else:
+        end_game()
 
 def end_game():
     # ends game (win or lose)
-    pass
+    if player_ships_count > computer_ships_count:
+        print("Congratulations! You are the winner!")
+        print("You hit all your enemies battleships in " + player_guess_count + "turns!")
+        new_game = input("Do you think you can do better? (Y/N):")
+    else: 
+        print("Oh no! All your battleships have been destroyed!")
+        new_game = input("Do you think you can do better? (Y/N):")
 
-load_empty_player_board(ship_board)
-load_empty_player_board(guess_board)
+if __name__ == "__main__":
+    generate_computer_ships()
+    place_ships()
+    load_board(player_ship_board)
+    load_board(player_guess_board)
+    while player_ships_count > 0 or computer_ships_count > 0:
+        player_guess()
