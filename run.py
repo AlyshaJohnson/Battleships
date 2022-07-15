@@ -1,4 +1,5 @@
 # Legend:
+# " " - unhit
 # "X" - hit
 # "O" - miss
 # 
@@ -51,7 +52,7 @@ def ship_direction(row, column, direction):
         ship_column_diff = column - 1
     return ship_row_diff, ship_column_diff
 
-def generate_computer_ships(board):
+def generate_ships(board):
     # creates computer ship placement
     for ship_type_1 in range(2):
         #get random ship coordinates
@@ -137,9 +138,26 @@ def end_game():
         new_game = input("Do you think you can do better? (Y/N):")
     else: 
         print("Oh no! All your battleships have been destroyed!")
-        new_game = input("Do you think you can do better? (Y/N):")
+        print(new_game)
 
 if __name__ == "__main__":
+    print("             <====>  Welcome to Battleships!  <====>")
+    print("The aim of the game is to sink your opponents battleships before they sink yours!")
+    name = input("Who is taking on this challenge?: ")
+    print("   <==>   Rules   <==>")
+    print("1. You will be playing against the computer.")
+    print("2. A board will be randomly generated for you and your oponent.")
+    print("3. Input coordinates of where you wish to strike.")
+    print("4. You will take it in turns to strike each others boards.")
+    print("5. The winner is the one who hits all their oponents ships first.")
+    print("Legend:")
+    print("'"' '"' - unhit")
+    print("'"'X'"' - hit")
+    print("'"'O'"' - miss")
+    print("Ships:")
+    print("<> - ship of length 2 cells, each player gets 2 of these")
+    print("<=> - ship of length 3 cells, each player gets 2 of these")
+    print("<==> - ship of length 4 cells, each player gets 1 of these")
     generate_computer_ships()
     place_ships()
     load_board(player_ship_board)
