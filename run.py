@@ -12,13 +12,11 @@
 from random import randint
 
 # Global variables
+player_1 = name
+player_2 = "computer"
 player_guess_count = 0
 player_ships_count = 5
 computer_ships_count = 5
-
-ship_type_1: ["<", ">"]
-ship_type_2: ["<", "=", ">"]
-ship_type_3: ["<", "=", "=", ">"]
 
 player_ship_board = [[" "] * 8 for x in range(8)]
 player_guess_board = [[" "] * 8 for i in range(8)]
@@ -36,65 +34,55 @@ convert_nums_to_letters = {
     "h": 7
 }
 
-# Functions
-def ship_direction(row, column, direction):
-    if direction == 0:
-        ship_row_diff = row + 1
-        ship_column_diff = 0
-    elif direction == 1:
-        ship_row_diff = row - 1
-        ship_column_diff = 0
-    elif direction == 2:
-        ship_row_diff = 0
-        ship_column_diff = column + 1
-    elif direction == 3:
-        ship_row_diff = 0
-        ship_column_diff = column - 1
-    return ship_row_diff, ship_column_diff
-
-def generate_ships(board):
-    # creates computer ship placement
-    for ship_type_1 in range(2):
-        #get random ship coordinates
-        ship_row, ship_column = randint(0,7), randint(0,7)
-        #get random number to generate direction of ship
-        ship_direction = randint(0,3)
-        ship_direction(ship_row, ship_column, ship_direction)
-        #check coordinate isn't already taken
-        while board[ship_row][ship_column] == "<" or "=" or ">":
-            ship_row, ship_column = get_ship_location()
-        #generates coordinates for ship_1
-        board[ship_row][ship_column] = "<"
-        board[ship_row + ship_row_diff][ship_column + ship_column_diff] = ">"
+# Classes
+class ship:
+    def __init__(self, length, row, column, direction):
+        #initialising ship
+        self.length = length
+        self.row = row
+        self.column = column
     
-    for ship_type_2 in range(2):
-        #get random ship coordinates
-        ship_row, ship_column = randint(0,7), randint(0,7)
-        #get random number to generate direction of ship
-        ship_direction = randint(0,3)
-        ship_direction(ship_row, ship_column, ship_direction)
-        #check coordinate isn't already taken
-        while board[ship_row][ship_column] == "<" or "=" or ">":
-            ship_row, ship_column = get_ship_location()
-        #generates coordinates for ship_1
-        board[ship_row][ship_column] = "<"
-        board[ship_row + ship_row_diff][ship_column + ship_column_diff] = "="
-        board[ship_row + (ship_row_diff*2)][ship_column + (ship_column_diff*2)] = ">"
+        if direction == 0:
+            self.direction = "Horizontal"
+        elif direction == 1:
+            self.direction = "Vertical"
+        else:
+            raise ValueError("Number needs to be with a '0' or '1' to get direction")
 
-    for ship_type_3 in range(1):
-        #get random ship coordinates
-        ship_row, ship_column = randint(0,7), randint(0,7)
-        #get random number to generate direction of ship
-        ship_direction = randint(0,3)
-        ship_direction(ship_row, ship_column, ship_direction)
-        #check coordinate isn't already taken
-        while board[ship_row][ship_column] == "<" or "=" or ">":
-            ship_row, ship_column = get_ship_location()
-        #generates coordinates for ship_type_3
-        board[ship_row][ship_column] = "<"
-        board[ship_row + ship_row_diff][ship_column + ship_column_diff] = "="
-        board[ship_row + (ship_row_diff*2)][ship_column + (ship_column_diff*2)] = "="
-        board[ship_row + (ship_row_diff*3)][ship_column + (ship_column_diff*3)] = ">"
+    def iter(self, length, direction):
+    #transform ship into list for required length then replace with boat symbols
+        self = []
+        for i in range(length):
+            self.append(i)
+        if direction == "Horizontal":
+            self[0] = "<"
+            self[-1] = ">"
+            if length > 2:
+                i=1
+                while i >= 1 and i <= length-2:
+                    self[i] = "="
+                    i+=1
+        if direction == "Vertical":
+            self[0] = "^"
+            self[-1] = "v"
+            if length > 2:
+                i=1
+                while i >= 1 and i <= length-2:
+                    self[i] = "||"
+                    i+=1
+        return self    
+
+ships = {
+    "ship_type_1": ship(2, randint(0,7), randint(0,7), randint(0,1)),
+    "ship_type_2": ship(3, randint(0,7), randint(0,7), randint(0,1)),
+    "ship_type_3": ship(4, randint(0,7), randint(0,7), randint(0,1))
+}
+
+# Functions
+def create_ships(dict, player):
+    # creates ships
+    for k, v in dict.items():
+        print(k + "_" + player, '=', [ship.iter(dict[k], dict[k].length, dict[k].direction)])
 
 def place_ships(board):
     # allows player to place ships
@@ -158,7 +146,8 @@ if __name__ == "__main__":
     print("<> - ship of length 2 cells, each player gets 2 of these")
     print("<=> - ship of length 3 cells, each player gets 2 of these")
     print("<==> - ship of length 4 cells, each player gets 1 of these")
-    generate_computer_ships()
+    create_ships(ships, player_1)
+    create_ships(ships, player_2)
     place_ships()
     load_board(player_ship_board)
     load_board(player_guess_board)
