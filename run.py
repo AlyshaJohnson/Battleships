@@ -12,16 +12,17 @@
 from random import randint
 
 # Global variables
-player_1 = name
-player_2 = "computer"
 player_guess_count = 0
 player_ships_count = 5
 computer_ships_count = 5
 
-player_ship_board = [[" "] * 8 for x in range(8)]
-player_guess_board = [[" "] * 8 for i in range(8)]
-computer_ship_board = [[" "] * 8 for p in range(8)]
-computer_guess_board = [[" "] * 8 for m in range(8)]
+player_ship_board = [[" "] * 8 for w in range(8)]
+computer_ship_board = [[" "] * 8 for y in range(8)]
+
+boards_guess = {
+    "player_guess_board": [[" "] * 8 for x in range(8)],
+    "computer_guess_board": [[" "] * 8 for z in range(8)]
+}
 
 convert_nums_to_letters = {
     "a": 0,
@@ -35,12 +36,11 @@ convert_nums_to_letters = {
 }
 
 # Classes
+
 class ship:
-    def __init__(self, length, row, column, direction):
+    def __init__(self, length, direction):
         #initialising ship
         self.length = length
-        self.row = row
-        self.column = column
     
         if direction == 0:
             self.direction = "Horizontal"
@@ -49,7 +49,7 @@ class ship:
         else:
             raise ValueError("Number needs to be with a '0' or '1' to get direction")
 
-    def iter(self, length, direction):
+    def iter_ship(self, length, direction):
     #transform ship into list for required length then replace with boat symbols
         self = []
         for i in range(length):
@@ -68,25 +68,45 @@ class ship:
             if length > 2:
                 i=1
                 while i >= 1 and i <= length-2:
-                    self[i] = "||"
+                    self[i] = "|"
                     i+=1
-        return self    
+        return self
 
 ships = {
-    "ship_type_1": ship(2, randint(0,7), randint(0,7), randint(0,1)),
-    "ship_type_2": ship(3, randint(0,7), randint(0,7), randint(0,1)),
-    "ship_type_3": ship(4, randint(0,7), randint(0,7), randint(0,1))
+    "ship_type_1": ship(2, randint(0,1)),
+    "ship_type_2": ship(3, randint(0,1)),
+    "ship_type_3": ship(4, randint(0,1))
 }
 
-# Functions
-def create_ships(dict, player):
-    # creates ships
-    for k, v in dict.items():
-        print(k + "_" + player, '=', [ship.iter(dict[k], dict[k].length, dict[k].direction)])
+player_1 = ships.copy()
+player_2 = ships.copy()
 
-def place_ships(board):
-    # allows player to place ships
-    pass
+# Functions
+def create_ships(player_ships_dict):
+    # checks for duplicates and creates ships at specified location
+    for k, v in player_ships_dict.items():
+        player_ships_dict[k]  = [ship.iter_ship(player_ships_dict[k], player_ships_dict[k].length, player_ships_dict[k].direction)]
+    return player_ships_dict
+
+def place_ships(board, player_ship_dict):
+    # place ships on board
+    create_ships(player_ship_dict)
+    ship_row, ship_column = randint(0,7), randint(0,7)
+    for k, v in player_ship_dict.items():
+        while board[ship_row][ship_column] != " ":
+            ship_row, ship_column = randint(0,7), randint(0,7)
+        if player_ship_dict[k][0][0] == "<":
+            while ship_column + len(player_ship_dict[k][0]) > len(board[ship_row]):
+                ship_column -= 1
+            board[ship_row][ship_column:(ship_column + len(player_ship_dict[k][0]))] = player_ship_dict[k][0]
+        elif player_ship_dict[k][0][0] == "^":
+            while ship_row + len(player_ship_dict[k][0]) > len(board[ship_row]):
+                ship_row -= 1
+            i = 0
+            while i <= len(player_ship_dict[k][0])-1:
+                board[ship_row + i][ship_column] = player_ship_dict[k][0][i]
+                i += 1
+    return board
 
 def load_board(board):
     # creates blank player guess and ship placement boards
@@ -98,7 +118,7 @@ def load_board(board):
         row_number += 1
     print(" -----------------")
 
-def reset_player_board():
+def reset_player_board(board):
     # allows player to reset their game board
     pass
 
@@ -143,12 +163,12 @@ if __name__ == "__main__":
     print("'"'X'"' - hit")
     print("'"'O'"' - miss")
     print("Ships:")
-    print("<> - ship of length 2 cells, each player gets 2 of these")
-    print("<=> - ship of length 3 cells, each player gets 2 of these")
+    print("<> - ship of length 2 cells, each player gets 1 of these")
+    print("<=> - ship of length 3 cells, each player gets 1 of these")
     print("<==> - ship of length 4 cells, each player gets 1 of these")
-    create_ships(ships, player_1)
-    create_ships(ships, player_2)
-    place_ships()
+    place_ships(player_ship_board, player_1)
+    place_ships(computer_ship_board, player_2)
+    print(player_ship_board)
     load_board(player_ship_board)
     load_board(player_guess_board)
     while player_ships_count > 0 or computer_ships_count > 0:
