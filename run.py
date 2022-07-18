@@ -18,11 +18,8 @@ computer_ships_count = 5
 
 player_ship_board = [[" "] * 8 for w in range(8)]
 computer_ship_board = [[" "] * 8 for y in range(8)]
-
-boards_guess = {
-    "player_guess_board": [[" "] * 8 for x in range(8)],
-    "computer_guess_board": [[" "] * 8 for z in range(8)]
-}
+player_guess_board = [[" "] * 8 for x in range(8)]
+computer_guess_board = [[" "] * 8 for z in range(8)]
 
 convert_nums_to_letters = {
     "a": 0,
@@ -168,8 +165,7 @@ if __name__ == "__main__":
     print("<==> - ship of length 4 cells, each player gets 1 of these")
     place_ships(player_ship_board, player_1)
     place_ships(computer_ship_board, player_2)
-    print(player_ship_board)
-    load_board(player_ship_board)
     load_board(player_guess_board)
-    while player_ships_count > 0 or computer_ships_count > 0:
-        player_guess()
+    load_board(player_ship_board)
+    #while player_ships_count > 0 or computer_ships_count > 0:
+    #   player_guess()
