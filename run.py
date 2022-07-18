@@ -115,13 +115,19 @@ def load_board(board):
         row_number += 1
     print(" -----------------")
 
-def reset_player_board(board):
+def reset_player_board():
     # allows player to reset their game board
-    pass
+    refresh = input("Are you happy with this board? (Y/N): ")
+    if len(refresh) > 1:
+        print("ValueError: input can only be Y or N.")
+        reset_player_board()
+    elif refresh == "n" or refresh == "N":
+        place_ships(player_ship_board, player_1)
+    elif refresh == "y" or refresh == "Y":
+        return
 
 def player_guess():
     # player makes guess (hit and miss)
-    pass
     if computer_ships_count > 0:
         computer_guess()
     else:
@@ -129,7 +135,6 @@ def player_guess():
 
 def computer_guess():
     # computer makes guess (hit and miss)
-    pass
     if player_ships_count > 0:
         player_guess()
     else:
@@ -167,5 +172,6 @@ if __name__ == "__main__":
     place_ships(computer_ship_board, player_2)
     load_board(player_guess_board)
     load_board(player_ship_board)
-    #while player_ships_count > 0 or computer_ships_count > 0:
-    #   player_guess()
+    reset_player_board()
+    while player_ships_count > 0 or computer_ships_count > 0:
+        player_guess()
