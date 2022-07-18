@@ -22,14 +22,14 @@ player_guess_board = [[" "] * 8 for x in range(8)]
 computer_guess_board = [[" "] * 8 for z in range(8)]
 
 convert_nums_to_letters = {
-    "a": 0,
-    "b": 1,
-    "c": 2,
-    "d": 3,
-    "e": 4,
-    "f": 5,
-    "g": 6,
-    "h": 7
+    "A": 0,
+    "B": 1,
+    "C": 2,
+    "D": 3,
+    "E": 4,
+    "F": 5,
+    "G": 6,
+    "H": 7
 }
 
 # Classes
@@ -107,7 +107,7 @@ def place_ships(board, player_ship_dict):
 
 def load_board(board):
     # creates blank player guess and ship placement boards
-    print("  a b c d e f g h")
+    print("  A B C D E F G H")
     print(" -----------------")
     row_number = 1
     for row in board:
@@ -128,17 +128,42 @@ def reset_player_board():
 
 def player_guess():
     # player makes guess (hit and miss)
+    guess = input("Enter column (A-H) and row (1-8) such as A3: ").upper()
+    if len(guess) == 2:
+        column = guess[0]
+        row = guess[1]
+    else:
+        print("Not an appropriate choice, please try again")
+        player_guess()
+    while row not in "12345678":
+        print("Not an appropriate choice, please select a valid row")
+        player_guess()
+    while column not in "ABCDEFGH":
+        print("Not an appropriate choice, please select a valid column")
+        player_guess()
+    column = convert_nums_to_letters[column]
+    row = int(row) - 1
+    player_guess = [row, column]
+    hit_miss(computer_ship_board, player_guess_board, player_guess)
     if computer_ships_count > 0:
         computer_guess()
     else:
         end_game()
 
 def computer_guess():
-    # computer makes guess (hit and miss)
+    # computer makes guess, generates coordinates for launch and determines hit or miss
+    row, column = randint(0, 7), randint(0, 7)
+    computer_guess = [row, column]
+    hit_miss(player_ship_board, computer_guess_board, computer_guess)
     if player_ships_count > 0:
         player_guess()
     else:
         end_game()
+
+def hit_miss(ship_board, guess_board, guess):
+    # determines if launch hits or misses ships
+    pass
+    print()
 
 def end_game():
     # ends game (win or lose)
@@ -173,5 +198,4 @@ if __name__ == "__main__":
     load_board(player_guess_board)
     load_board(player_ship_board)
     reset_player_board()
-    while player_ships_count > 0 or computer_ships_count > 0:
-        player_guess()
+    player_guess()
