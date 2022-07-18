@@ -154,6 +154,7 @@ def computer_guess():
     # computer makes guess, generates coordinates for launch and determines hit or miss
     row, column = randint(0, 7), randint(0, 7)
     computer_guess = [row, column]
+    print("The computer aimed a missile to" + computer_guess + "coordinates")
     hit_miss(player_ship_board, computer_guess_board, computer_guess)
     if player_ships_count > 0:
         player_guess()
