@@ -33,8 +33,7 @@ convert_nums_to_letters = {
 }
 
 # Classes
-
-class ship:
+class Ship:
     def __init__(self, length, direction):
         #initialising ship
         self.length = length
@@ -47,7 +46,8 @@ class ship:
             raise ValueError("Number needs to be with a '0' or '1' to get direction")
 
     def iter_ship(self, length, direction):
-    #transform ship into list for required length then replace with boat symbols
+        # transform ship into list for required length then replace with boat
+        # symbols
         self = []
         for i in range(length):
             self.append(i)
@@ -55,24 +55,24 @@ class ship:
             self[0] = "<"
             self[-1] = ">"
             if length > 2:
-                i=1
+                i = 1
                 while i >= 1 and i <= length-2:
                     self[i] = "="
-                    i+=1
+                    i += 1
         if direction == "Vertical":
             self[0] = "^"
             self[-1] = "v"
             if length > 2:
-                i=1
+                i = 1
                 while i >= 1 and i <= length-2:
                     self[i] = "|"
-                    i+=1
+                    i += 1
         return self
 
 ships = {
-    "ship_type_1": ship(2, randint(0,1)),
-    "ship_type_2": ship(3, randint(0,1)),
-    "ship_type_3": ship(4, randint(0,1))
+    "ship_type_1": Ship(2, randint(0,1)),
+    "ship_type_2": Ship(3, randint(0,1)),
+    "ship_type_3": Ship(4, randint(0,1))
 }
 
 player_1 = ships.copy()
@@ -82,7 +82,7 @@ player_2 = ships.copy()
 def create_ships(player_ships_dict):
     # checks for duplicates and creates ships at specified location
     for k, v in player_ships_dict.items():
-        player_ships_dict[k]  = [ship.iter_ship(player_ships_dict[k], player_ships_dict[k].length, player_ships_dict[k].direction)]
+        player_ships_dict[k] = [Ship.iter_ship(player_ships_dict[k], player_ships_dict[k].length, player_ships_dict[k].direction)]
     return player_ships_dict
 
 def place_ships(board, player_ship_dict):
@@ -107,6 +107,7 @@ def place_ships(board, player_ship_dict):
 
 def load_board(board):
     # creates blank player guess and ship placement boards
+    print(board)
     print("  A B C D E F G H")
     print(" -----------------")
     row_number = 1
@@ -127,7 +128,8 @@ def reset_player_board():
         return
 
 def player_guess():
-    # player makes guess (hit and miss)
+    # player makes guess, generates coordinates for launch and determines
+    # hit or miss
     guess = input("Enter column (A-H) and row (1-8) such as A3: ").upper()
     if len(guess) == 2:
         column = guess[0]
@@ -145,17 +147,22 @@ def player_guess():
     row = int(row) - 1
     player_guess = [row, column]
     hit_miss(computer_ship_board, player_guess_board, player_guess)
+    load_board(player_guess_board)
+    load_board(player_ship_board)
     if computer_ships_count > 0:
         computer_guess()
     else:
         end_game()
 
 def computer_guess():
-    # computer makes guess, generates coordinates for launch and determines hit or miss
+    # computer makes guess, generates coordinates for launch and determines
+    # hit or miss
     row, column = randint(0, 7), randint(0, 7)
     computer_guess = [row, column]
     print("The computer aimed a missile to" + computer_guess + "coordinates")
     hit_miss(player_ship_board, computer_guess_board, computer_guess)
+    load_board(player_guess_board)
+    load_board(player_ship_board)
     if player_ships_count > 0:
         player_guess()
     else:
@@ -163,18 +170,33 @@ def computer_guess():
 
 def hit_miss(ship_board, guess_board, guess):
     # determines if launch hits or misses ships
-    pass
-    print()
+    row = guess[0]
+    column = guess[1]
+    if ship_board[row][column] == "X" or ship_board[row][column] == "O":
+        if guess == player_guess:
+            print("Not an appropriate choice, please try again")
+            player_guess()
+        elif guess == computer_guess:
+            computer_guess()
+    elif ship_board[row][column] == " ":
+        ship_board[row][column] = "O"
+        guess_board[row][column] = "O"
+        print("It's a miss!")
+    else:
+        ship_board[row][column] = "X"
+        guess_board[row][column] = "X"
+        print("It's a hit!")
+    return ship_board, guess_board
 
 def end_game():
     # ends game (win or lose)
     if player_ships_count > computer_ships_count:
         print("Congratulations! You are the winner!")
         print("You hit all your enemies battleships in " + player_guess_count + "turns!")
-        new_game = input("Do you think you can do better? (Y/N):")
+        new_game = input("Do you think you can do better? (Y/N): ")
     else: 
         print("Oh no! All your battleships have been destroyed!")
-        print(new_game)
+        new_game = input("Do you think you can do better? (Y/N): ")
 
 if __name__ == "__main__":
     print("             <====>  Welcome to Battleships!  <====>")
