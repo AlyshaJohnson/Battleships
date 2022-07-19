@@ -1,22 +1,23 @@
 # Legend:
-# " " - unhit
-# "X" - hit
-# "O" - miss
-# 
+#   " " - unhit
+#   "X" - hit
+#   "O" - miss
 # Ship legend:
-# <> - ship of length 2 cells, each player gets 2 of these
-# <=> - ship of length 3 cells, each player gets 2 of these
-# <==> - ship of length 4 cells, each player gets 1 of these
+#   <> - ship of length 2 cells, each player gets 2 of these
+#   <=> - ship of length 3 cells, each player gets 2 of these
+#   <==> - ship of length 4 cells, each player gets 1 of these
 
 # Imports
 from random import randint
 
-# Global variables
+# Variables
 result = None
 player_guess_count = 0
 player_ships_count = 9
 computer_ships_count = 9
-game_over = False
+
+# Global Variable
+GAME_OVER = False
 
 player_ship_board = [[" "] * 8 for w in range(8)]
 computer_ship_board = [[" "] * 8 for y in range(8)]
@@ -37,7 +38,7 @@ convert_nums_to_letters = {
 # Classes
 class Ship:
     def __init__(self, length, direction):
-        #initialising ship
+        # initialising ship
         self.length = length
     
         if direction == 0:
@@ -71,6 +72,7 @@ class Ship:
                     i += 1
         return self
 
+
 ships = {
     "ship_type_1": Ship(2, randint(0, 1)),
     "ship_type_2": Ship(3, randint(0, 1)),
@@ -90,10 +92,10 @@ def create_ships(player_ships_dict):
 def place_ships(board, player_ship_dict):
     # place ships on board
     create_ships(player_ship_dict)
-    ship_row, ship_column = randint(0,7), randint(0,7)
+    ship_row, ship_column = randint(0, 7), randint(0, 7)
     for k, v in player_ship_dict.items():
         while board[ship_row][ship_column] != " ":
-            ship_row, ship_column = randint(0,7), randint(0,7)
+            ship_row, ship_column = randint(0, 7), randint(0, 7)
         if player_ship_dict[k][0][0] == "<":
             while ship_column + len(player_ship_dict[k][0]) > len(board[ship_row]):
                 ship_column -= 1
@@ -149,21 +151,13 @@ def player_guess():
     # player makes guess, generates coordinates for launch and determines
     # hit or miss
     global player_guess_count, computer_ships_count
-    guess = input("Enter column (A-H) and row (1-8) such as A3: ").upper()
-    if len(guess) == 2:
-        column = guess[0]
-        row = guess[1]
-    else:
-        print("Not an appropriate choice, please try again")
-        player_guess()
-    while row not in "12345678":
-        print("Not an appropriate choice, please select a valid row")
-        player_guess()
-    while column not in "ABCDEFGH":
-        print("Not an appropriate choice, please select a valid column")
-        player_guess()
-    column = convert_nums_to_letters[column]
-    row = int(row) - 1
+    while True:
+        guess = input("Enter column (A-H) and row (1-8) such as A3: ").upper()
+        if guess[0] in "ABCDEFGH" and guess[1] in "12345678" and len(guess) == 2:
+            break
+        print("Invalid input, try again.")
+    column = convert_nums_to_letters[guess[0]]
+    row = int(guess[1]) - 1
     player_guess = [row, column]
     hit_miss(computer_ship_board, player_guess_board, player_guess)
     result = hit_miss(computer_ship_board, player_guess_board, player_guess)[2]
@@ -200,13 +194,14 @@ def hit_miss(ship_board, guess_board, guess):
     global result
     row = guess[0]
     column = guess[1]
-    if ship_board[row][column] == "X" or ship_board[row][column] == "O":
-        if guess == player_guess:
-            print("Not an appropriate choice, please try again")
-            player_guess()
-        elif guess == computer_guess:
-            computer_guess()
-    elif ship_board[row][column] == " ":
+    while True:
+        if ship_board[row][column] == "X" or ship_board[row][column] == "O":
+            if guess == player_guess:
+                print("Not an appropriate choice, please try again")
+                player_guess()
+            elif guess == computer_guess:
+                computer_guess()
+    if ship_board[row][column] == " ":
         ship_board[row][column] = "O"
         guess_board[row][column] = "O"
         result = "It's a miss!"
@@ -218,17 +213,18 @@ def hit_miss(ship_board, guess_board, guess):
 
 def end_game():
     # determines winner of battleships game and turns game_over to true
-    global game_over
+    global GAME_OVER
     if player_ships_count > computer_ships_count:
         print("Congratulations! You are the winner!")
-        print("You hit all your enemies battleships in " + str(player_guess_count) + "turns!")
-        game_over = True
+        print("You hit all your enemies battleships in " + str(player_guess_count) + " turns!")
+        GAME_OVER = True
     else: 
         print("Oh no! All your battleships have been destroyed!")
-        game_over = True
+        GAME_OVER = True
+    return
 
 if __name__ == "__main__":
-    while game_over == False:
+    while GAME_OVER is False:
         print("             <====>  Welcome to Battleships!  <====>")
         print("The aim of the game is to sink your opponents battleships")
         print("before they sink yours!")
@@ -240,13 +236,13 @@ if __name__ == "__main__":
         print("4. You will take it in turns to strike each others boards.")
         print("5. The winner is the one who hits all their oponents ships first.")
         print("Legend:")
-        print("'"' '"' - unhit")
-        print("'"'X'"' - hit")
-        print("'"'O'"' - miss")
+        print("  '"' '"' - unhit")
+        print("  '"'X'"' - hit")
+        print("  '"'O'"' - miss")
         print("Ships:")
-        print("<> - ship of length 2 cells, each player gets 1 of these")
-        print("<=> - ship of length 3 cells, each player gets 1 of these")
-        print("<==> - ship of length 4 cells, each player gets 1 of these")
+        print("  <> - ship of length 2 cells, each player gets 1 of these")
+        print("  <=> - ship of length 3 cells, each player gets 1 of these")
+        print("  <==> - ship of length 4 cells, each player gets 1 of these")
         place_ships(player_ship_board, player_1)
         place_ships(computer_ship_board, player_2)
         load_board(player_guess_board, player_ship_board)
