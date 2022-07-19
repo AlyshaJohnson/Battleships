@@ -72,9 +72,9 @@ class Ship:
         return self
 
 ships = {
-    "ship_type_1": Ship(2, randint(0,1)),
-    "ship_type_2": Ship(3, randint(0,1)),
-    "ship_type_3": Ship(4, randint(0,1))
+    "ship_type_1": Ship(2, randint(0, 1)),
+    "ship_type_2": Ship(3, randint(0, 1)),
+    "ship_type_3": Ship(4, randint(0, 1))
 }
 
 player_1 = ships.copy()
@@ -128,16 +128,20 @@ def load_board(guess_board, ship_board):
     print(" -----------------")
     print("No. of ships left: " + str(player_ships_count))
     print("No. of missiles launched: " + str(player_guess_count))
-    return player_ships_count, computer_ships_count, player_guess_count
 
-def reset_player_board():
+def reset_player_board(ship_board, player):
     # allows player to reset their game board
-    refresh = input("Are you happy with this board? (Y/N): ")
-    if len(refresh) > 1:
-        print("ValueError: input can only be Y or N.")
-        reset_player_board()
-    elif refresh == "n" or refresh == "N":
-        place_ships(player_ship_board, player_1)
+    while True:
+        refresh = input("Are you happy with this board? (Y/N): ")
+        if refresh in ('y', 'n', 'Y', 'N'):
+            break
+        print("Invalid input, try again.")
+    if refresh == "n" or refresh == "N":
+        player = ships.copy()
+        ship_board = [[" "] * 8 for w in range(8)]
+        place_ships(ship_board, player)
+        load_board(player_guess_board, ship_board)
+        reset_player_board(ship_board, player)
     elif refresh == "y" or refresh == "Y":
         return
 
@@ -246,7 +250,7 @@ if __name__ == "__main__":
         place_ships(player_ship_board, player_1)
         place_ships(computer_ship_board, player_2)
         load_board(player_guess_board, player_ship_board)
-        reset_player_board()
+        reset_player_board(player_ship_board, player_1)
         player_guess()
     while True:
         new_game = input("Do you think you can do better? (Y/N): ")
