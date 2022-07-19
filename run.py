@@ -13,8 +13,8 @@ from random import randint
 
 # Global variables
 player_guess_count = 0
-player_ships_count = 5
-computer_ships_count = 5
+player_ships_count = 9
+computer_ships_count = 9
 
 player_ship_board = [[" "] * 8 for w in range(8)]
 computer_ship_board = [[" "] * 8 for y in range(8)]
@@ -105,16 +105,31 @@ def place_ships(board, player_ship_dict):
                 i += 1
     return board
 
-def load_board(board):
+def load_board(guess_board, ship_board):
     # creates blank player guess and ship placement boards
-    print(board)
+    global player_ships_count, computer_ships_count
+    while player_guess_count > 0:
+        count_ships()
+    print("<-> GUESS BOARD <->")
     print("  A B C D E F G H")
     print(" -----------------")
     row_number = 1
-    for row in board:
+    for row in guess_board:
         print("%d|%s|" % (row_number, "|".join(row)))
         row_number += 1
     print(" -----------------")
+    print("Number of enemy ships left: " + str(computer_ships_count))
+    print("<-> SHIP BOARD <->")
+    print("  A B C D E F G H")
+    print(" -----------------")
+    row_number = 1
+    for row in ship_board:
+        print("%d|%s|" % (row_number, "|".join(row)))
+        row_number += 1
+    print(" -----------------")
+    print("No. of ships left: " + str(player_ships_count))
+    print("No. of missiles launched: " + str(player_guess_count))
+    return player_ships_count, computer_ships_count, player_guess_count
 
 def reset_player_board():
     # allows player to reset their game board
@@ -130,6 +145,7 @@ def reset_player_board():
 def player_guess():
     # player makes guess, generates coordinates for launch and determines
     # hit or miss
+    global player_guess_count, computer_ships_count
     guess = input("Enter column (A-H) and row (1-8) such as A3: ").upper()
     if len(guess) == 2:
         column = guess[0]
@@ -147,29 +163,28 @@ def player_guess():
     row = int(row) - 1
     player_guess = [row, column]
     hit_miss(computer_ship_board, player_guess_board, player_guess)
-    load_board(player_guess_board)
-    load_board(player_ship_board)
-    if computer_ships_count > 0:
+    player_guess_count += 1
+    load_board(player_guess_board, player_ship_board)
+    while computer_ships_count > 0:
         computer_guess()
-    else:
-        end_game()
+    end_game()
 
 def computer_guess():
     # computer makes guess, generates coordinates for launch and determines
     # hit or miss
+    global player_ships_count
     row, column = randint(0, 7), randint(0, 7)
     computer_guess = [row, column]
-    print("The computer aimed a missile to" + computer_guess + "coordinates")
+    print("The computer aimed a missile at " + str(computer_guess) + " coordinates")
     hit_miss(player_ship_board, computer_guess_board, computer_guess)
-    load_board(player_guess_board)
-    load_board(player_ship_board)
-    if player_ships_count > 0:
+    load_board(player_guess_board, player_ship_board)
+    while player_ships_count > 0:
         player_guess()
-    else:
-        end_game()
+    end_game()
 
 def hit_miss(ship_board, guess_board, guess):
     # determines if launch hits or misses ships
+    global player_ships_count, computer_ships_count
     row = guess[0]
     column = guess[1]
     if ship_board[row][column] == "X" or ship_board[row][column] == "O":
@@ -186,21 +201,40 @@ def hit_miss(ship_board, guess_board, guess):
         ship_board[row][column] = "X"
         guess_board[row][column] = "X"
         print("It's a hit!")
-    return ship_board, guess_board
+    return ship_board, guess_board, player_ships_count, computer_ships_count
+
+def count_ships():
+    # counts the ships left on the board after missiles have been fired
+    global player_ships_count, computer_ships_count
+    player_ships_count = player_ship_board.count("<") + player_ship_board.count("=") + player_ship_board.count(">") + player_ship_board.count("^") + player_ship_board.count("|") + player_ship_board.count("v")
+    computer_ships_count = computer_ship_board.count("<") + computer_ship_board.count("=") + computer_ship_board.count(">") + computer_ship_board.count("^") + computer_ship_board.count("|") + computer_ship_board.count("v")
+    return player_ships_count, computer_ships_count
 
 def end_game():
     # ends game (win or lose)
     if player_ships_count > computer_ships_count:
         print("Congratulations! You are the winner!")
-        print("You hit all your enemies battleships in " + player_guess_count + "turns!")
-        new_game = input("Do you think you can do better? (Y/N): ")
+        print("You hit all your enemies battleships in " + str(player_guess_count) + "turns!")
+        new_game = input(name + " , do you think you can do better? (Y/N): ")
     else: 
         print("Oh no! All your battleships have been destroyed!")
-        new_game = input("Do you think you can do better? (Y/N): ")
+        new_game = input(name + " , do you think you can do better? (Y/N): ")
+    new_game(new_game)
+
+def new_game(user_input):
+    if user_input == "y" or user_input == "Y":
+        print("Game restarting...")
+    elif user_input == "n" or user_input == "N":
+        print("Thank you for playing " + name + " , see you next time!")
+    else:
+        print("Your input is invalid")
+        new_game = input("Would you like to play another game? (Y/N): ")
+        new_game(new_game)
 
 if __name__ == "__main__":
     print("             <====>  Welcome to Battleships!  <====>")
-    print("The aim of the game is to sink your opponents battleships before they sink yours!")
+    print("The aim of the game is to sink your opponents battleships")
+    print("before they sink yours!")
     name = input("Who is taking on this challenge?: ")
     print("   <==>   Rules   <==>")
     print("1. You will be playing against the computer.")
@@ -218,7 +252,6 @@ if __name__ == "__main__":
     print("<==> - ship of length 4 cells, each player gets 1 of these")
     place_ships(player_ship_board, player_1)
     place_ships(computer_ship_board, player_2)
-    load_board(player_guess_board)
-    load_board(player_ship_board)
+    load_board(player_guess_board, player_ship_board)
     reset_player_board()
     player_guess()
