@@ -135,7 +135,7 @@ def reset_player_board(ship_board, player):
     # allows player to reset their game board
     while True:
         refresh = input("Are you happy with this board? (Y/N): \n")
-        if refresh in ('y', 'n', 'Y', 'N'):
+        if refresh in "yYnN":
             break
         print("Invalid input, try again.")
     if refresh == "n" or refresh == "N":
@@ -152,12 +152,16 @@ def player_guess():
     # hit or miss
     global player_guess_count, computer_ships_count
     while True:
-        guess = input("Enter column (A-H) and row (1-8) such as A3: \n").upper()
-        if guess[0] in "ABCDEFGH" and guess[1] in "12345678" and len(guess) == 2:
+        while True:
+            guess = input("Enter column (A-H) and row (1-8) such as A3: \n").upper()
+            if guess[0] in "ABCDEFGH" and guess[1] in "12345678" and len(guess) == 2:
+                column = convert_nums_to_letters[guess[0]]
+                row = int(guess[1]) - 1
+                break
+            print("Invalid input, try again.")
+        if player_guess_board[row][column] == " ":
             break
-        print("Invalid input, try again.")
-    column = convert_nums_to_letters[guess[0]]
-    row = int(guess[1]) - 1
+        print("Coordinates already input, try again.")
     player_guess = [row, column]
     hit_miss(computer_ship_board, player_guess_board, player_guess)
     result = hit_miss(computer_ship_board, player_guess_board, player_guess)[2]
@@ -175,8 +179,11 @@ def computer_guess():
     # computer makes guess, generates coordinates for launch and determines
     # hit or miss
     global player_ships_count
-    row, column = randint(0, 7), randint(0, 7)
-    computer_guess = [row, column]
+    while True:
+        row, column = randint(0, 7), randint(0, 7)
+        computer_guess = [row, column]
+        if computer_guess_board[row][column] == " ":
+            break
     print("The computer aimed a missile at " + str(computer_guess) + " coordinates")
     hit_miss(player_ship_board, computer_guess_board, computer_guess)
     result = hit_miss(player_ship_board, computer_guess_board, computer_guess)[2]
@@ -194,21 +201,16 @@ def hit_miss(ship_board, guess_board, guess):
     global result
     row = guess[0]
     column = guess[1]
-    while True:
-        if ship_board[row][column] == "X" or ship_board[row][column] == "O":
-            if guess == player_guess:
-                print("Not an appropriate choice, please try again")
-                player_guess()
-            elif guess == computer_guess:
-                computer_guess()
     if ship_board[row][column] == " ":
         ship_board[row][column] = "O"
         guess_board[row][column] = "O"
         result = "It's a miss!"
-    else:
+    elif ship_board[row][column] in "<=>^\v":
         ship_board[row][column] = "X"
         guess_board[row][column] = "X"
         result = "It's a hit!"
+    else:
+        print("Coordinates already submitted")
     return ship_board, guess_board, result
 
 def end_game():
