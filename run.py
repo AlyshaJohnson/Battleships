@@ -1,11 +1,13 @@
-# Legend:
-#   " " - unhit
-#   "X" - hit
-#   "O" - miss
-# Ship legend:
-#   <> - ship of length 2 cells, each player gets 2 of these
-#   <=> - ship of length 3 cells, each player gets 2 of these
-#   <==> - ship of length 4 cells, each player gets 1 of these
+"""
+Legend:
+   " " - unhit
+   "X" - hit
+   "O" - miss
+ Ship legend:
+   <> - ship of length 2 cells, each player gets 2 of these
+   <=> - ship of length 3 cells, each player gets 2 of these
+   <==> - ship of length 4 cells, each player gets 1 of these
+"""
 
 # Imports
 from random import randint
@@ -15,8 +17,6 @@ result = None
 player_guess_count = 0
 player_ships_count = 9
 computer_ships_count = 9
-
-# Global Variable
 GAME_OVER = False
 
 player_ship_board = [[" "] * 8 for w in range(8)]
@@ -134,7 +134,7 @@ def load_board(guess_board, ship_board):
 def reset_player_board(ship_board, player):
     # allows player to reset their game board
     while True:
-        refresh = input("Are you happy with this board? (Y/N): ")
+        refresh = input("Are you happy with this board? (Y/N): \n")
         if refresh in ('y', 'n', 'Y', 'N'):
             break
         print("Invalid input, try again.")
@@ -152,7 +152,7 @@ def player_guess():
     # hit or miss
     global player_guess_count, computer_ships_count
     while True:
-        guess = input("Enter column (A-H) and row (1-8) such as A3: ").upper()
+        guess = input("Enter column (A-H) and row (1-8) such as A3: \n").upper()
         if guess[0] in "ABCDEFGH" and guess[1] in "12345678" and len(guess) == 2:
             break
         print("Invalid input, try again.")
@@ -228,7 +228,7 @@ if __name__ == "__main__":
         print("             <====>  Welcome to Battleships!  <====>")
         print("The aim of the game is to sink your opponents battleships")
         print("before they sink yours!")
-        name = input("Who is taking on this challenge?: ")
+        name = input("Who is taking on this challenge?: \n")
         print("   <==>   Rules   <==>")
         print("1. You will be playing against the computer.")
         print("2. A board will be randomly generated for you and your oponent.")
@@ -249,7 +249,7 @@ if __name__ == "__main__":
         reset_player_board(player_ship_board, player_1)
         player_guess()
     while True:
-        new_game = input("Do you think you can do better? (Y/N): ")
+        new_game = input("Do you think you can do better? (Y/N): \n")
         if new_game in ('y', 'n', 'Y', 'N'):
             break
         print("Invalid input, try again.")
