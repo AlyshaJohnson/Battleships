@@ -12,6 +12,7 @@
 from random import randint
 
 # Global variables
+result = None
 player_guess_count = 0
 player_ships_count = 9
 computer_ships_count = 9
@@ -161,7 +162,8 @@ def player_guess():
     row = int(row) - 1
     player_guess = [row, column]
     hit_miss(computer_ship_board, player_guess_board, player_guess)
-    if hit_miss(computer_ship_board, player_guess_board, player_guess)[2] == "It's a hit!":
+    result = hit_miss(computer_ship_board, player_guess_board, player_guess)[2]
+    if result == "It's a hit!":
         computer_ships_count -= 1
     else:
         pass
@@ -179,7 +181,8 @@ def computer_guess():
     computer_guess = [row, column]
     print("The computer aimed a missile at " + str(computer_guess) + " coordinates")
     hit_miss(player_ship_board, computer_guess_board, computer_guess)
-    if hit_miss(player_ship_board, computer_guess_board, computer_guess)[2] == "It's a hit!":
+    result = hit_miss(player_ship_board, computer_guess_board, computer_guess)[2]
+    if result == "It's a hit!":
         player_ships_count -= 1
     else:
         pass
@@ -190,6 +193,7 @@ def computer_guess():
 
 def hit_miss(ship_board, guess_board, guess):
     # determines if launch hits or misses ships
+    global result
     row = guess[0]
     column = guess[1]
     if ship_board[row][column] == "X" or ship_board[row][column] == "O":
@@ -209,7 +213,7 @@ def hit_miss(ship_board, guess_board, guess):
     return ship_board, guess_board, result
 
 def end_game():
-    # ends game (win or lose)
+    # determines winner of battleships game and turns game_over to true
     global game_over
     if player_ships_count > computer_ships_count:
         print("Congratulations! You are the winner!")
@@ -248,10 +252,9 @@ if __name__ == "__main__":
         new_game = input("Do you think you can do better? (Y/N): ")
         if new_game in ('y', 'n', 'Y', 'N'):
             break
-        print("invalid input.")
-    if new_game == "y" or user_input == "Y":
+        print("Invalid input, try again.")
+    if new_game == "y" or new_game == "Y":
         print("Game restarting...")
         game_over = True
-    elif new_game == "n" or user_input == "N":
+    elif new_game == "n" or new_game == "N":
         print("Thank you for playing, see you next time!")
-        
