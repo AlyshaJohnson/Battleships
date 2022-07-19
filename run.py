@@ -15,6 +15,7 @@ from random import randint
 player_guess_count = 0
 player_ships_count = 9
 computer_ships_count = 9
+game_over = False
 
 player_ship_board = [[" "] * 8 for w in range(8)]
 computer_ship_board = [[" "] * 8 for y in range(8)]
@@ -107,9 +108,6 @@ def place_ships(board, player_ship_dict):
 
 def load_board(guess_board, ship_board):
     # creates blank player guess and ship placement boards
-    global player_ships_count, computer_ships_count
-    while player_guess_count > 0:
-        count_ships()
     print("<-> GUESS BOARD <->")
     print("  A B C D E F G H")
     print(" -----------------")
@@ -163,6 +161,10 @@ def player_guess():
     row = int(row) - 1
     player_guess = [row, column]
     hit_miss(computer_ship_board, player_guess_board, player_guess)
+    if hit_miss(computer_ship_board, player_guess_board, player_guess)[2] == "It's a hit!":
+        computer_ships_count -= 1
+    else:
+        pass
     player_guess_count += 1
     load_board(player_guess_board, player_ship_board)
     while computer_ships_count > 0:
@@ -177,6 +179,10 @@ def computer_guess():
     computer_guess = [row, column]
     print("The computer aimed a missile at " + str(computer_guess) + " coordinates")
     hit_miss(player_ship_board, computer_guess_board, computer_guess)
+    if hit_miss(player_ship_board, computer_guess_board, computer_guess)[2] == "It's a hit!":
+        player_ships_count -= 1
+    else:
+        pass
     load_board(player_guess_board, player_ship_board)
     while player_ships_count > 0:
         player_guess()
@@ -184,7 +190,6 @@ def computer_guess():
 
 def hit_miss(ship_board, guess_board, guess):
     # determines if launch hits or misses ships
-    global player_ships_count, computer_ships_count
     row = guess[0]
     column = guess[1]
     if ship_board[row][column] == "X" or ship_board[row][column] == "O":
@@ -196,62 +201,57 @@ def hit_miss(ship_board, guess_board, guess):
     elif ship_board[row][column] == " ":
         ship_board[row][column] = "O"
         guess_board[row][column] = "O"
-        print("It's a miss!")
+        result = "It's a miss!"
     else:
         ship_board[row][column] = "X"
         guess_board[row][column] = "X"
-        print("It's a hit!")
-    return ship_board, guess_board, player_ships_count, computer_ships_count
-
-def count_ships():
-    # counts the ships left on the board after missiles have been fired
-    global player_ships_count, computer_ships_count
-    player_ships_count = player_ship_board.count("<") + player_ship_board.count("=") + player_ship_board.count(">") + player_ship_board.count("^") + player_ship_board.count("|") + player_ship_board.count("v")
-    computer_ships_count = computer_ship_board.count("<") + computer_ship_board.count("=") + computer_ship_board.count(">") + computer_ship_board.count("^") + computer_ship_board.count("|") + computer_ship_board.count("v")
-    return player_ships_count, computer_ships_count
+        result = "It's a hit!"
+    return ship_board, guess_board, result
 
 def end_game():
     # ends game (win or lose)
+    global game_over
     if player_ships_count > computer_ships_count:
         print("Congratulations! You are the winner!")
         print("You hit all your enemies battleships in " + str(player_guess_count) + "turns!")
-        new_game = input(name + " , do you think you can do better? (Y/N): ")
+        game_over = True
     else: 
         print("Oh no! All your battleships have been destroyed!")
-        new_game = input(name + " , do you think you can do better? (Y/N): ")
-    new_game(new_game)
-
-def new_game(user_input):
-    if user_input == "y" or user_input == "Y":
-        print("Game restarting...")
-    elif user_input == "n" or user_input == "N":
-        print("Thank you for playing " + name + " , see you next time!")
-    else:
-        print("Your input is invalid")
-        new_game = input("Would you like to play another game? (Y/N): ")
-        new_game(new_game)
+        game_over = True
 
 if __name__ == "__main__":
-    print("             <====>  Welcome to Battleships!  <====>")
-    print("The aim of the game is to sink your opponents battleships")
-    print("before they sink yours!")
-    name = input("Who is taking on this challenge?: ")
-    print("   <==>   Rules   <==>")
-    print("1. You will be playing against the computer.")
-    print("2. A board will be randomly generated for you and your oponent.")
-    print("3. Input coordinates of where you wish to strike.")
-    print("4. You will take it in turns to strike each others boards.")
-    print("5. The winner is the one who hits all their oponents ships first.")
-    print("Legend:")
-    print("'"' '"' - unhit")
-    print("'"'X'"' - hit")
-    print("'"'O'"' - miss")
-    print("Ships:")
-    print("<> - ship of length 2 cells, each player gets 1 of these")
-    print("<=> - ship of length 3 cells, each player gets 1 of these")
-    print("<==> - ship of length 4 cells, each player gets 1 of these")
-    place_ships(player_ship_board, player_1)
-    place_ships(computer_ship_board, player_2)
-    load_board(player_guess_board, player_ship_board)
-    reset_player_board()
-    player_guess()
+    while game_over == False:
+        print("             <====>  Welcome to Battleships!  <====>")
+        print("The aim of the game is to sink your opponents battleships")
+        print("before they sink yours!")
+        name = input("Who is taking on this challenge?: ")
+        print("   <==>   Rules   <==>")
+        print("1. You will be playing against the computer.")
+        print("2. A board will be randomly generated for you and your oponent.")
+        print("3. Input coordinates of where you wish to strike.")
+        print("4. You will take it in turns to strike each others boards.")
+        print("5. The winner is the one who hits all their oponents ships first.")
+        print("Legend:")
+        print("'"' '"' - unhit")
+        print("'"'X'"' - hit")
+        print("'"'O'"' - miss")
+        print("Ships:")
+        print("<> - ship of length 2 cells, each player gets 1 of these")
+        print("<=> - ship of length 3 cells, each player gets 1 of these")
+        print("<==> - ship of length 4 cells, each player gets 1 of these")
+        place_ships(player_ship_board, player_1)
+        place_ships(computer_ship_board, player_2)
+        load_board(player_guess_board, player_ship_board)
+        reset_player_board()
+        player_guess()
+    while True:
+        new_game = input("Do you think you can do better? (Y/N): ")
+        if new_game in ('y', 'n', 'Y', 'N'):
+            break
+        print("invalid input.")
+    if new_game == "y" or user_input == "Y":
+        print("Game restarting...")
+        game_over = True
+    elif new_game == "n" or user_input == "N":
+        print("Thank you for playing, see you next time!")
+        
