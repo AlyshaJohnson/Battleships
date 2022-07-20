@@ -85,6 +85,8 @@ Several technologies were used to aid the project:
     - Used as the development environment.
 - [Heroku](https://dashboard.heroku.com/apps)
     - Used to deploy the game.
+- [PythonTutor](https://pythontutor.com/)
+    - Used to visualise the flow of code as it is executed
 - [Lucid](https://lucid.app/documents#/dashboard)
     - Used to create the flowchart for the project.
 - [Pep8](http://pep8online.com/)
@@ -213,35 +215,28 @@ In the Deploy tab:
     2. Enter the GitHub repository name and click on `Search`.
     3. Choose the correct repository for the application and click on `Connect`.
 2. A choice is given to deploy the project manually or automatically, automatic deployment will generate a new application every time a change is pushed to Github, whereas manual deployment requires the `Deploy Branch` button to be pushed whenever a change is made.
-3. Once the deployment method has been chosen, the application will be built and can be opened using the `Open App` button at the top of the page:
+3. Once the deployment method has been chosen, the application will be built and can be opened using the `Open App` button at the top of the page.
 
 ![](/assets/images/heroku_deployed_image.jpeg)
 
 ## 6 Credits
 
+All code was written by the developer, but help and guidance was required to generate ideas, troubleshoot and test. The following credits who helped and guided this project.
+
 ### 6.1 Content
 
-Logos and Fonts:
-- The fonts were taken from [GoogleFonts](https://fonts.google.com/)
-- The icons in the footer were taken from [Font Awesome](https://fontawesome.com/)
-
 Tutorials and support:
-- General guidance, information and limitations on elements, attributes, and methods from [w3schools](https://www.w3schools.com/default.asp) and [MDN Web Docs](https://developer.mozilla.org/en-US/)
-- <insert list of tutorials followed>
-- The many people who 'beta tested' the quiz app.
+- General guidance, information and limitations on variable, functions, and methods from [w3schools](https://www.w3schools.com/default.asp), [RealPython](https://realpython.com/) and [StackOverflow](https://stackoverflow.com/)
+- Logical flow of game, [Pythondex](https://pythondex.com/python-battleship-game) was used as inspiration.
+- Logical flow of game and step by step guidance of creating game, KnowledgeMaverns on [youtube](https://www.youtube.com/watch?v=tF1WRCrd_HQ) was used.
+- Use of Object Oriented Programming in game was inspired by user: cloud2236863496 on [CodeCademy](https://discuss.codecademy.com/t/excellent-battleship-game-written-in-python/430605).
+- The many people who 'beta tested' the app.
 
-### 6.2 Media
-
-Any photos used throughout the app are stock imagery from the following services:
-- [unsplash](https://unsplash.com/)
-- [FreeImages](https://www.freeimages.com/)
-- [PikWizard](https://pikwizard.com/)
-
-<insert any other media used throughout the app/site here>
-
-### 6.3 Research
+### 6.2 Research
 
 As mentioned in the design section, competitor research was conducted. These are credited below:
-- <insert list of research links>
+- [battleshiponline](https://www.battleshiponline.org)
+- [battleship-game](http://en.battleship-game.org)
 
-### 6.4 Special Thanks
+### 6.3 Special Thanks
+A special thanks to Harry Dhillon for providing guidance and suggested improvements on this project.
