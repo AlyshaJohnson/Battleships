@@ -1,10 +1,10 @@
 # Battleships
 
-Purpose:
-
-Aim:
+This is the README.md file for command-line-interface application of a single player game of battleships, played against the computer.
 
 ![Responsive Mockup](/assets/images/Device-mockup.jpeg)
+
+A link to the deployed project can be found [here](https://alyshajohnson-battleships.herokuapp.com/).
 
 ## 1. Design and Development
 
