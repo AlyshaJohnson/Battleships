@@ -8,65 +8,92 @@ Aim:
 
 ## 1. Design and Development
 
-For the design of this <application>, the 5 pillars of User Experience Design (UXD) were used to cover the strategy, scope, structure, skeleton and surface to make sure the design is intuitive, simple and enjoyable.
+For the design of this application, the 5 pillars of User Experience Design (UXD) were used to cover the strategy, scope, structure, skeleton and surface to make sure the design is intuitive, simple and enjoyable.
 
 ### 1.1 Strategy
 
-The target user audience…
+The brief that was given by the stakeholder is as follows:
 
-Interviews and workshops with users and stakeholders were conducted to understand their requirements and perspectives.
+*External user’s goal:*
 
-Research was conducted …
+- The application user wants to play a logic game
+
+*Site owner's goal:*
+
+- The Battleships game is played on grids on which each player's fleet of battleships are marked. The locations of the fleets are concealed from the other player. Players call shots at the other player's ships, and the objective of the game is to destroy the opposing player's fleet.
+- The application provides a working battleships game for a single user to play against the computer.
+
+Research was conducted into the wants of a variety of target audienced and other versions of battleship games, from physical board games to online games. All this was used to determine the minimum requirements for features, logic and user experience. 
 
 ### 1.2 Scope
 
 From the research and interviews conducted with the target audience and stakeholders, user stories were created to determine the flow of the app. The focus was put on the following user stories:
 
-![User Stories 1 - 3](<insert image location>)
-![User Stories 4 - 5](<insert image location>)
+![User Stories 1 - 3](/assets/images/user_stories_1_2_3.jpeg)
+![User Stories 4 - 5](/assets/images/user_stories_4_5.jpeg)
+
+These user stories start to determine the logic required throughout the game.
 
 ### 1.3 Structure
 
-From the user stories, content, data, features and functionality can be determined.
+From the user stories, content, logic and libraries can be determined.
 
 **For the content:**
+- Generate computer ship placement
+- Input player ship placement
+    - refresh board if unhappy
+- Generate player and computer boards
+    - placement rules for ships
+- Hit/miss ship
+    - if coordinates = 'X' -> hit
+    - if coordinates = '0' -> miss
+- Generate computer guess
+    - logic of guess after 'hit'
+- End game
+    - if user_ships = 0 or if computer_ships = 0
+- Results
+    - if user_ships > computer
+        user = winner
+    - play again?
 
+The content determined here was produced whilst in the design phase of the project. Due to time constraints, it was planned to randomly generate the player's board for them with an input to allow them to refresh the board if desired, and the logic of the computer's guess.
 
-**For the data:**
+**For the libraries:**
+For the above content to be produced it was determined the library `random` would be required to generate computer ship placement and computer guess with the use of the function `randint()`.
 
+### 1.4 Skeleton and Surface
 
-**For the features / functionality:**
+As this application is a back-end code, run through a web-based portal, little can be done to change the webpage without some front-end code to match. However, the user still needs to enjoy the game. The features that are included in the code, are instructional, informative and clear.
 
+The features included are:
+1. Welcome page
+2. Rules and legend
+3. Visible player guess and ship boards including:
+    - ship counter to show how many computer ships are left
+    - ship counter to show how many player ships are left
+    - guess counter to show how many guesses have been played
+4. Refresh board input
+5. Coordinates input
+6. Restart game
 
-### 1.4 Skeleton
+User testing of the code will be implemented to gain feedback and insight into how the user responds to the game, and determine if there are any changes that will need to be implemented to make it more useful, readable and enjoyable.
 
-When the structure of the app, information and features had been determined, a wireframe for each view could be created:
-
-<insert view of app/website>
-
-### 1.5 Surface
-
-**Colour Palette**
-
-Colour was added to certain key elements to highlight them and improve the user experience in the game.
-
-- Instructions - 
-- When a battleship was hit
-- Ship count for computer and player
+![](/assets/images/start_screen.jpeg)
 
 ## 2. Features
 
 ### 2.1 Existing Features
 
-The features deployed for this quiz are as follows:
+The features deployed for this game are as follows:
 
 <insert feature descriptions and images>
 
 ### 2.2 Future Features
 
 In addition to the features deployed, some features that could be deployed in a future release are:
+- Player to input their own ship placement through use of coordinates.
+- Greater logic when the computer 'picks' the coordinates. For example, if a hit is successful then coordinates up, down, left and right are returned before returning to a random selection.
 - Coin toss to determine which user fires a missile first - this could be done by using the randint(0, 1), where 0 is heads and 1 is tails, against a user input or heads or tails to go first.
-- 
 
 ## 3. Technologies Used
 
@@ -74,9 +101,6 @@ Several technologies were used to aid the project:
 
 - [Python](https://www.python.org/)
     - Python is the core programming language used to write all of the code in this game to make it fully functional.
-    - In addition, the following Python modules were used :
-        - [Colored](https://pypi.org/project/colored/)
-            - Used to add colours to the printed terminal messages
 - [GitHub](https://github.com/)
     - Used to store code for the project after being pushed.
 - [Git](https://git-scm.com/)
@@ -152,11 +176,13 @@ Errors / bug fixes:
 - some coordinates not printing onto player_guess_board
 - "coordinates already submitted" printed to terminal between boards
 
-The improvements and fixes that were made were...
+The improvements and fixes that were made were adjustments to the input description and writing more descriptive instructions. Additionally, the bug relating to some coordinates not printing onto the player_guess_board was due to the reference symbols in the if loop not being correct and therefore no 'X' appearing in the board.
 
 ### 4.4 Unfixed Bugs
 
-From all the testing completed,
+From all the testing completed, there are only two known bugs that have not been fixed. These are:
+- printing computer_guess_coords as numbers instead of [letter, number]
+- "coordinates already submitted" printed to terminal between boards
 
 ## 5. Deployment
 
@@ -225,7 +251,7 @@ In the Deploy tab:
 
 ![](/assets/images/heroku_deployed_image.jpeg)
 
-## 6 Credits
+## 6. Credits
 
 All code was written by the developer, but help and guidance was required to generate ideas, troubleshoot and test. The following credits who helped and guided this project.
 
