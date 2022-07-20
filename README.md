@@ -23,7 +23,7 @@ The brief that was given by the stakeholder is as follows:
 - The Battleships game is played on grids on which each player's fleet of battleships are marked. The locations of the fleets are concealed from the other player. Players call shots at the other player's ships, and the objective of the game is to destroy the opposing player's fleet.
 - The application provides a working battleships game for a single user to play against the computer.
 
-Research was conducted into the wants of a variety of target audienced and other versions of battleship games, from physical board games to online games. All this was used to determine the minimum requirements for features, logic and user experience. 
+Research was conducted into the wants of a variety of target audiences and other versions of battleship games, from physical board games to online games. All this was used to determine the minimum requirements for features, logic and user experience. 
 
 ### 1.2 Scope
 
@@ -32,19 +32,20 @@ From the research and interviews conducted with the target audience and stakehol
 ![User Stories 1 - 3](/assets/images/user_stories_1_2_3.jpeg)
 ![User Stories 4 - 5](/assets/images/user_stories_4_5.jpeg)
 
-These user stories start to determine the logic required throughout the game.
+These user stories start to determine the logic required throughout the game. Although these have changed slightly due to time, the premise of the logic and flow still holds true.
 
 ### 1.3 Structure
 
 From the user stories, content, logic and libraries can be determined.
 
 **For the content:**
+
 - Generate computer ship placement
 - Input player ship placement
     - refresh board if unhappy
 - Generate player and computer boards
     - placement rules for ships
-- Hit/miss ship
+- Hit / miss ship
     - if coordinates = 'X' -> hit
     - if coordinates = '0' -> miss
 - Generate computer guess
@@ -59,6 +60,7 @@ From the user stories, content, logic and libraries can be determined.
 The content determined here was produced whilst in the design phase of the project. Due to time constraints, it was planned to randomly generate the player's board for them with an input to allow them to refresh the board if desired, and the logic of the computer's guess.
 
 **For the libraries:**
+
 For the above content to be produced it was determined the library `random` would be required to generate computer ship placement and computer guess with the use of the function `randint()`.
 
 ### 1.4 Skeleton and Surface
@@ -91,7 +93,7 @@ The features deployed for this game are as follows:
 ### 2.2 Future Features
 
 In addition to the features deployed, some features that could be deployed in a future release are:
-- Player to input their own ship placement through use of coordinates.
+- Player to input their own ship placement through use of coordinates. This can be done in a similar manner to the input for the coordinate guess.
 - Greater logic when the computer 'picks' the coordinates. For example, if a hit is successful then coordinates up, down, left and right are returned before returning to a random selection.
 - Coin toss to determine which user fires a missile first - this could be done by using the randint(0, 1), where 0 is heads and 1 is tails, against a user input or heads or tails to go first.
 
@@ -111,8 +113,6 @@ Several technologies were used to aid the project:
     - Used to deploy the game.
 - [PythonTutor](https://pythontutor.com/)
     - Used to visualise the flow of code as it is executed
-- [Lucid](https://lucid.app/documents#/dashboard)
-    - Used to create the flowchart for the project.
 - [Pep8](http://pep8online.com/)
     - Used to test my code for any issues or errors.
 
@@ -128,6 +128,10 @@ Throughout the development, errors occurred when writing code due to the existan
 - 'Invalid assignment to self in method' needs to occur in order to create a list
 - 2 'Used variable 'value'' which needs to be included as looping through a dictionary which require key, value pairs
 - 4 'Using the global statement' which is required to call and alter global variables
+
+A major bug that was managed and caught whilst in development was the generation of the ship boards for both player and computer would produce an overwrite of one ship over another, causing there to be one less ship to hit. This caused a subsequent bugs as the game would be unfair as the ship_count for either player or computer would never be 0. This is especially concerning if both players had only 8 ships placed instead of 9 the game could not end.
+
+The solution for this was to add a while loop in the place_ships function to count all the ships placed on the board, if this did not equal 9, then the board was refreshed until this condition becam true.
 
 **Input Validator Testing**
 
