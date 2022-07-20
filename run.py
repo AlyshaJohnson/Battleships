@@ -9,12 +9,11 @@ Legend:
    <==> - ship of length 4 cells, each player gets 1 of these
 """
 
-# Imports
 from random import randint
 
 
-# Classes
 class Ship:
+    """ classify ships """
     def __init__(self, length, direction):
         """ initialising ship """
         self.length = length
@@ -23,11 +22,12 @@ class Ship:
         elif direction == 1:
             self.direction = "Vertical"
         else:
-            raise ValueError("Number needs to be with a '0' or '1' to get direction")
+            raise ValueError("Number needs to be with a '0' or '1' to get\
+                 direction")
 
     def iter_ship(self, length, direction):
         """ transform ship into list for required length then replace with boat
-         symbols to produce ships """
+        symbols to produce ships """
         self = []
         for i in range(length):
             self.append(i)
@@ -50,7 +50,6 @@ class Ship:
         return self
 
 
-# Dictionaries
 ships = {
     "ship_type_1": Ship(2, randint(0, 1)),
     "ship_type_2": Ship(3, randint(0, 1)),
@@ -74,7 +73,6 @@ convert_nums_to_letters = {
 }
 
 
-# Variables
 RESULT = None
 PLAYER_GUESS_COUNT = 0
 PLAYER_SHIPS_COUNT = 9
@@ -82,39 +80,44 @@ COMPUTER_SHIP_COUNT = 9
 GAME_OVER = False
 
 
-# Boards
 player_ship_board = [[" "] * 8 for w in range(8)]
 computer_ship_board = [[" "] * 8 for y in range(8)]
 player_guess_board = [[" "] * 8 for x in range(8)]
 computer_guess_board = [[" "] * 8 for z in range(8)]
 
 
-# Functions
 def create_ships(player_ships_dict):
     """ checks for duplicates and creates ships at specified location """
-    for k, v in player_ships_dict.items():
-        player_ships_dict[k] = [Ship.iter_ship(player_ships_dict[k], player_ships_dict[k].length, player_ships_dict[k].direction)]
+    for key, value in player_ships_dict.items():
+        player_ships_dict[key] = [Ship.iter_ship(player_ships_dict[key], player_ships_dict[key].length, player_ships_dict[key].direction)]  # noqa
     return player_ships_dict
 
 
 def place_ships(board, player_ship_dict):
-    """ place ships on board """
+    """ place ships on board whilst checking the space is blank and the whole \
+        ship will fit on the board"""
     create_ships(player_ship_dict)
     ship_row, ship_column = randint(0, 7), randint(0, 7)
-    for k, v in player_ship_dict.items():
-        while board[ship_row][ship_column] != " ":
-            ship_row, ship_column = randint(0, 7), randint(0, 7)
-        if player_ship_dict[k][0][0] == "<":
-            while ship_column + len(player_ship_dict[k][0]) > len(board[ship_row]):
-                ship_column -= 1
-            board[ship_row][ship_column:(ship_column + len(player_ship_dict[k][0]))] = player_ship_dict[k][0]
-        elif player_ship_dict[k][0][0] == "^":
-            while ship_row + len(player_ship_dict[k][0]) > len(board[ship_row]):
-                ship_row -= 1
-            i = 0
-            while i <= len(player_ship_dict[k][0])-1:
-                board[ship_row + i][ship_column] = player_ship_dict[k][0][i]
-                i += 1
+    while True:
+        for key, value in player_ship_dict.items():
+            while board[ship_row][ship_column] != " ":
+                ship_row, ship_column = randint(0, 7), randint(0, 7)
+            if player_ship_dict[key][0][0] == "<":
+                while ship_column + len(player_ship_dict[key][0]) > len(board[ship_row]):  # noqa
+                    ship_column -= 1
+                board[ship_row][ship_column:(ship_column + len(player_ship_dict[key][0]))] = player_ship_dict[key][0]  # noqa
+            elif player_ship_dict[key][0][0] == "^":
+                while ship_row + len(player_ship_dict[key][0]) > len(board[ship_row]):  # noqa
+                    ship_row -= 1
+                i = 0
+                while i <= len(player_ship_dict[key][0])-1:
+                    board[ship_row + i][ship_column] = player_ship_dict[key][0][i]  # noqa
+                    i += 1
+        ship_sum = 0
+        for row in board:
+            ship_sum += row.count("<") + row.count("=") + row.count(">") + row.count("^") + row.count("|") + row.count("v")  # noqa
+        if ship_sum == 9:
+            return
     return board
 
 
@@ -164,8 +167,8 @@ def player_guess():
     global PLAYER_GUESS_COUNT, COMPUTER_SHIP_COUNT
     while True:
         while True:
-            guess = input("Enter column (A-H) and row (1-8) such as A3: \n").upper()
-            if guess[0] in "ABCDEFGH" and guess[1] in "12345678" and len(guess) == 2:
+            guess = input("Enter column (A-H) and row (1-8) such as A3: \n").upper()  # noqa
+            if guess[0] in "ABCDEFGH" and guess[1] in "12345678" and len(guess) == 2:  # noqa
                 column = convert_nums_to_letters[guess[0]]
                 row = int(guess[1]) - 1
                 break
@@ -175,7 +178,7 @@ def player_guess():
         print("Coordinates already input, try again.")
     player_guess_coords = [row, column]
     hit_miss(computer_ship_board, player_guess_board, player_guess_coords)
-    result = hit_miss(computer_ship_board, player_guess_board, player_guess_coords)[2]
+    result = hit_miss(computer_ship_board, player_guess_board, player_guess_coords)[2]  # noqa
     if result == "It's a hit!":
         COMPUTER_SHIP_COUNT -= 1
     else:
@@ -196,9 +199,9 @@ def computer_guess():
         computer_guess_coords = [row, column]
         if computer_guess_board[row][column] == " ":
             break
-    print("The computer aimed a missile at " + str(computer_guess_coords) + " coordinates")
+    print("The computer aimed a missile at " + str(computer_guess_coords) + " coordinates")  # noqa
     hit_miss(player_ship_board, computer_guess_board, computer_guess_coords)
-    result = hit_miss(player_ship_board, computer_guess_board, computer_guess_coords)[2]
+    result = hit_miss(player_ship_board, computer_guess_board, computer_guess_coords)[2]  # noqa
     if result == "It's a hit!":
         PLAYER_SHIPS_COUNT -= 1
     else:
@@ -232,7 +235,7 @@ def end_game():
     global GAME_OVER
     if PLAYER_SHIPS_COUNT > COMPUTER_SHIP_COUNT:
         print("Congratulations! You are the winner!")
-        print("You hit all your enemies battleships in " + str(PLAYER_GUESS_COUNT) + " turns!")
+        print("You hit all your enemies battleships in " + str(PLAYER_GUESS_COUNT) + " turns!")  # noqa
         GAME_OVER = True
     else:
         print("Oh no! All your battleships have been destroyed!")
@@ -248,14 +251,14 @@ if __name__ == "__main__":
         name = input("Who is taking on this challenge? (Enter name): \n")
         print("   <==>   Rules   <==>")
         print("1. You will be playing against the computer.")
-        print("2. A board will be randomly generated for you and your oponent.")
+        print("2. A board will be randomly generated for you and your oponent.")  # noqa
         print("3. Input coordinates of where you wish to strike.")
         print("4. You will take it in turns to strike each others boards.")
-        print("5. The winner is the one who hits all their oponents ships first.")
+        print("5. The winner is the one who hits all their oponents ships first.")  # noqa
         print("Legend:")
-        print("  '"' '"' - unhit")
-        print("  "'X'"' - hit")
-        print("  '"'O'"' - miss")
+        print('  " " - unhit')
+        print('  "X" - hit')
+        print('  "O" - miss')
         print("Ships:")
         print("  <> - ship of length 2 cells, each player gets 1 of these")
         print("  <=> - ship of length 3 cells, each player gets 1 of these")
