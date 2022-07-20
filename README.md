@@ -4,7 +4,7 @@ Purpose:
 
 Aim:
 
-![Responsive Mockup](<directory to image>)
+![Responsive Mockup](/assets/images/Device-mockup.jpeg)
 
 ## 1. Design and Development
 
@@ -152,25 +152,70 @@ The improvements and fixes that were made were...
 
 ## 5. Deployment
 
-The ‘<insert website name>’ was deployed to GitHub pages. The steps to deploy are as follows:
-- In the GitHub repository, navigate to the Settings tab
-- From the source section drop-down menu, select the Master Branch
-- Once the master branch has been selected, the page will be automatically refreshed with a detailed ribbon display to indicate the successful deployment.
+The master branch of this repository has been used for the deployed version of this application.
 
-The ‘<insert app name>’ was deployed with the help of the Heroku app
+### 5.1 Using Github & Gitpod
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
+To deploy this command-line interface application, the [Code Institute Python Essentials Template](https://github.com/Code-Institute-Org/python-essentials-template) was used, as this enables the application to be properly viewed on Heroku using a mock terminal. 
 
-1. `heroku/python`
-2. `heroku/nodejs`
+- Click the `Use This Template` button.
+- Add a repository name and brief description.
+- Click the `Create Repository from Template` to create your repository.
+- To create a Gitpod workspace you then need to click `Gitpod`, this can take a few minutes.
+- When you want to work on the project it is best to open the workspace from Gitpod (rather than Github) as this will open your previous workspace rather than creating a new one. You should pin the workspace so that it isn't deleted.
+-  Committing your work should be done often and should have clear/explanatory messages, use the following commands to make your commits:
+    - `git add .`: adds all modified files to a staging area
+    - `git commit -m "A message explaining your commit"`: commits all changes to a local repository.
+    - `git push`: pushes all your committed changes to your Github repository.
 
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
+*Forking the GitHub Repository*
 
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
+To make changes to a repository without affecting it, a copy can be be made by 'Forking' it. This ensures the original repository remains unchanged.
 
-Connect your GitHub repository and deploy as normal.
+1. Find the relevant GitHub repository
+2. In the top right corner of the page, click the Fork button (under account)
+3. The repository has now been 'Forked' and a copy has been made
 
-The live link can be found here - <insert link>
+*Cloning the GitHub Repository*
+
+Cloning a repository will allow a local version of the repository to be downloaded and worked on. Cloning is also be a great way to backup work.
+
+1. Find the relevant GitHub repository
+2. Press the arrow on the Code button
+3. Copy the link that is shown in the drop-down
+4. Now open Gitpod & select the directory location where the clone is to be created
+5. In the terminal type 'git clone' & then paste the link copied in GitHub
+6. Press enter and a local clone will be created.
+
+### 5.2 Creating an Application with Heroku
+
+Following the below steps using the Code Institute tutorial:
+
+- The following command in the Gitpod CLI will create the relevant files needed for Heroku to install project dependencies `pip3 freeze --local > requirements.txt`. Please note this file should be added to a .gitignore file to prevent the file from being committed. Int he instance of this project, no requirements were created as there were no project dependencies.
+
+1. Go to [Heroku.com](https://dashboard.heroku.com/apps) and log in; create an account if needed.
+2. Click the `New` dropdown and select `Create New App`.
+3. Enter a name for the new project - all Heroku apps need to have a unique name.
+4. Select the region.
+
+*Heroku Settings*
+Environment Variables need to be set up - this is a key step to ensuring the application is deployed properly.
+- In the Settings tab, click on `Reveal Config Vars` and set the following variables:
+    - If using credentials they will need to be added as a variable, the key is the name 'CREDS' and the value is the contents of the creds JSON
+    - Add key: `PORT` & value `8000`
+- Buildpacks are also required for proper deployment, simply click `Add buildpack` and search for the ones required.
+    - For this project, `Python` and `Node.js` were needed, in this order.
+
+*Heroku Deployment*
+In the Deploy tab:
+1. Connect the Heroku account to the Github Repository following these steps:
+    1. Click on the `Deploy` tab and choose `Github-Connect to Github`.
+    2. Enter the GitHub repository name and click on `Search`.
+    3. Choose the correct repository for the application and click on `Connect`.
+2. A choice is given to deploy the project manually or automatically, automatic deployment will generate a new application every time a change is pushed to Github, whereas manual deployment requires the `Deploy Branch` button to be pushed whenever a change is made.
+3. Once the deployment method has been chosen, the application will be built and can be opened using the `Open App` button at the top of the page:
+
+![](/assets/images/heroku_deployed_image.jpeg)
 
 ## 6 Credits
 
@@ -200,14 +245,3 @@ As mentioned in the design section, competitor research was conducted. These are
 - <insert list of research links>
 
 ### 6.4 Special Thanks
-
-
-## Reminders
-
-* Your code must be placed in the `run.py` file
-* Your dependencies must be placed in the `requirements.txt` file
-* Do not edit any of the other files or your code may not deploy properly
-
-## Constraints
-
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
