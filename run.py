@@ -218,7 +218,7 @@ def hit_miss(ship_board, guess_board, guess):
         ship_board[row][column] = "O"
         guess_board[row][column] = "O"
         RESULT = "It's a miss!"
-    elif ship_board[row][column] in "<=>^\v":
+    elif ship_board[row][column] in "<=>^|v":
         ship_board[row][column] = "X"
         guess_board[row][column] = "X"
         RESULT = "It's a hit!"
