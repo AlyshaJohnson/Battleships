@@ -92,7 +92,7 @@ computer_guess_board = [[" "] * 8 for z in range(8)]
 # Functions
 def create_ships(player_ships_dict):
     """ checks for duplicates and creates ships at specified location """
-    for k in player_ships_dict.items():
+    for k, v in player_ships_dict.items():
         player_ships_dict[k] = [Ship.iter_ship(player_ships_dict[k], player_ships_dict[k].length, player_ships_dict[k].direction)]
     return player_ships_dict
 
@@ -101,7 +101,7 @@ def place_ships(board, player_ship_dict):
     """ place ships on board """
     create_ships(player_ship_dict)
     ship_row, ship_column = randint(0, 7), randint(0, 7)
-    for k in player_ship_dict.items():
+    for k, v in player_ship_dict.items():
         while board[ship_row][ship_column] != " ":
             ship_row, ship_column = randint(0, 7), randint(0, 7)
         if player_ship_dict[k][0][0] == "<":
@@ -245,7 +245,7 @@ if __name__ == "__main__":
         print("             <====>  Welcome to Battleships!  <====>")
         print("The aim of the game is to sink your opponents battleships")
         print("before they sink yours!")
-        name = input("Who is taking on this challenge?: \n")
+        name = input("Who is taking on this challenge? (Enter name): \n")
         print("   <==>   Rules   <==>")
         print("1. You will be playing against the computer.")
         print("2. A board will be randomly generated for you and your oponent.")
