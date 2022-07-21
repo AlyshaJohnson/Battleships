@@ -113,11 +113,16 @@ def place_ships(board, player_ship_dict):
                 while i <= len(player_ship_dict[key][0])-1:
                     board[ship_row + i][ship_column] = player_ship_dict[key][0][i]  # noqa
                     i += 1
-        ship_sum = 0
-        for row in board:
-            ship_sum += row.count("<") + row.count("=") + row.count(">") + row.count("^") + row.count("|") + row.count("v")  # noqa
-        if ship_sum == 9:
-            return
+        sum = 0
+        for r in board:
+            sum += r.count("<") + r.count("=") + r.count(">") + r.count("^") + r.count("|") + r.count("v")  # noqa
+        if sum == 9:
+            return board
+        else:
+            i = 0
+            while i < len(board):
+                board[i] = [" ", " ", " ", " ", " ", " ", " ", " "]
+                i += 1
     return board
 
 
