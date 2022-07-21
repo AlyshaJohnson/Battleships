@@ -160,8 +160,9 @@ def reset_player_board(ship_board, player):
     """ allows player to reset their game board """
     while True:
         refresh = input("Are you happy with this board? (Y/N): \n")
-        if refresh in "yYnN":
-            break
+        if len(refresh) == 1:
+            if refresh in "yYnN":
+                break
         print("Invalid input, try again.")
     if refresh == "n" or refresh == "N":
         player = ships.copy()
@@ -180,10 +181,11 @@ def player_guess():
     while True:
         while True:
             guess = input("Enter column (A-H) and row (1-8) such as A3: \n").upper()  # noqa
-            if guess[0] in "ABCDEFGH" and guess[1] in "12345678" and len(guess) == 2:  # noqa
-                column = convert_nums_to_letters[guess[0]]
-                row = int(guess[1]) - 1
-                break
+            if len(guess) == 2:
+                if guess[0] in "ABCDEFGH" and guess[1] in "12345678":  # noqa
+                    column = convert_nums_to_letters[guess[0]]
+                    row = int(guess[1]) - 1
+                    break
             print("Invalid input, try again.")
         if player_guess_board[row][column] == " ":
             break
@@ -197,9 +199,10 @@ def player_guess():
         pass
     PLAYER_GUESS_COUNT += 1
     load_board(player_guess_board, player_ship_board)
-    while COMPUTER_SHIP_COUNT > 0:
+    if COMPUTER_SHIP_COUNT > 0:
         computer_guess()
-    end_game()
+    else:
+        end_game()
     return
 
 
@@ -220,9 +223,10 @@ def computer_guess():
     else:
         pass
     load_board(player_guess_board, player_ship_board)
-    while PLAYER_SHIPS_COUNT > 0:
+    if PLAYER_SHIPS_COUNT > 0:
         player_guess()
-    end_game()
+    else:
+        end_game()
     return
 
 
@@ -258,6 +262,7 @@ def end_game():
 
 
 if __name__ == "__main__":
+    global GAME_OVER
     while GAME_OVER is False:
         print("               <====>  Welcome to Battleships!  <====>")
         print("The aim of the game is to sink your opponents battleships before they")  # noqa
@@ -289,8 +294,9 @@ if __name__ == "__main__":
         player_guess()
     while True:
         new_game = input("Do you think you can do better? (Y/N): \n")
-        if new_game in "yYnN":
-            break
+        if len(new_game) == 1:
+            if new_game in "yYnN":
+                break
         print("Invalid input, try again.")
     if new_game == "yY":
         print("Game restarting...")
