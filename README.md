@@ -76,23 +76,79 @@ The features included are:
     - guess counter to show how many guesses have been played
 4. Refresh board input
 5. Coordinates input
-6. Restart game
+6. End game
 
 User testing of the code will be implemented to gain feedback and insight into how the user responds to the game, and determine if there are any changes that will need to be implemented to make it more useful, readable and enjoyable.
-
-![](/assets/images/start_screen.jpeg)
 
 ## 2. Features
 
 ### 2.1 Existing Features
 
-The features deployed for this game are as follows:
+The following section details the features in more detail.
 
-<insert feature descriptions and images>
+**Welcome page**
+The welcome page is automatically loaded when the program is run to welcome the player and introduce the purpose of the program. It also allows the user to input their name or nickname into the terminal to make the program feel more amicable.
+
+![](/assets/images/welcome_page.jpeg)
+
+**Rules and legend**
+Once the user has input their name, the rules and legend clearly tell the user how they must defeat the computer and win the game. The rules are listed numerically and the legend is a key to list the objects the user will see on the board.
+
+![](/assets/images/key_legend.jpeg)
+
+**Visible player guess and ship boards**
+
+The two boards for the user are made visible and printed each time to the terminal. The guess board gives a view of how successful / unsuccessful their openent. The ship board gives a view of the guesses the user has made and how successful they have been. Together, these boards side by side, give the user full visibility of their game.
+
+![](/assets/images/player_boards.jpeg)
+
+The visible board also includes:
+    - ship counter to show how many computer ships are left
+    - ship counter to show how many player ships are left
+    - guess counter to show how many guesses have been played
+
+![](/assets/images/counters.jpeg)
+
+Unfortunately, the terminal does not allow for both boards and the counters to be visible on one screen and this is something to think about to improve the user experience in a future release.
+
+**Refresh board input**
+
+The terminal asks the user if they are happy with their generated ship board; they have the chance to input 'Y' or 'N' into the terminal. If they input 'Y' or 'y', the terminal moves on to asking for coordinates.
+
+![](/assets/images/refresh_board_y.jpeg)
+
+If they input 'N' or 'n', the board is refreshed and the same question is asked to the user. They can refresh their board until they are happy with their ship board.
+
+If the user inputs something that is not 'Y', 'y', 'N' or 'n', then the terminal returns the message "Invalid input, try again." and the opportunity to input again.
+
+![](/assets/images/refresh_board_wrong.jpeg)
+
+**Coordinates input**
+
+The terminal asks the user to input coordinates, giving instruction to how the program will take the coordinates.
+
+![](/assets/images/new_coords.jpeg)
+
+If the user inputs a coordinate that is out of range of the board or not a number followed by a number, the terminal returns the message "Invalid input, try again." and the opportunity to input new coordinates.
+
+![](/assets/images/new_coords_wrong.jpeg)
+
+If the user inputs a coordinate that has already been used, the terminal returns the message "Coordinates already input, try again." anf the opportunity to input new coordinates.
+
+![](/assets/images/new_coords_dup.jpeg)
+
+Once the user has input in readable coordinates, the terminal returns an updated version of the guess and ship boards which include the player's and computer missile coordinates and whether it hit or missed a ship; the count of ships left for the player and the computer; and a count of the number of missiles launched.
+
+![](/assets/images/new_coords_result.jpeg)
+
+**End game**
+
+Once either the player or computer ship counter is at 0, the game is ended and the result returned to the terminal. An input is also printed asking the user if they want to play again. If 'Y' or 'y', the game board restarts; if 'N' or 'n', the game ends with the message "Thank you for playing, see you next time!".
 
 ### 2.2 Future Features
 
 In addition to the features deployed, some features that could be deployed in a future release are:
+- Improve UI by having the load_board printed to one page - this can be done by changing the terminal size it is printed to or, if this cannot be done, creating a front-end that is not a terminal.
 - Player to input their own ship placement through use of coordinates. This can be done in a similar manner to the input for the coordinate guess.
 - Greater logic when the computer 'picks' the coordinates. For example, if a hit is successful then coordinates up, down, left and right are returned before returning to a random selection.
 - Coin toss to determine which user fires a missile first - this could be done by using the randint(0, 1), where 0 is heads and 1 is tails, against a user input or heads or tails to go first.
@@ -144,12 +200,19 @@ The input validator testing scenarios conducted to ensure input errors were capt
 6. row/column input already used
 7. new_game input out of range (e.g. 7, Nah)
 8. capitalisation for new_game input does not return error (e.g. Y, y)
+9. no input entered
 
 Scenarios 2, 5 and 8 returned no errors.
 
 Scenarios 1, 3, 6 and 7 returned bugs due to the use of an if loop to iterate through the expected conditions. These bugs were fixed by replacing the if loop with a while loop.
 
 Scenario 4 counted the duplicate input as a coordinate and continued with the code. This was not desired, so an additional while loop was added to ask for input if the coordinates in the board aren't a space.
+
+Scenario 9 returned 2 bugs:
+- When nothing is input into player_board_reset input, the game continues rather than asking for another answer.
+- When nothing is input into the row/column input an index error is returned.
+
+As these bugs found during scenario 9 were found 90 mins before go-live, they have been captured as known bugs and will be updated in a future release.
 
 **Browser Tesing**
 
@@ -186,7 +249,9 @@ The improvements and fixes that were made were adjustments to the input descript
 
 From all the testing completed, there are only two known bugs that have not been fixed. These are:
 - printing computer_guess_coords as numbers instead of [letter, number]
-- "coordinates already submitted" printed to terminal between boards
+- "coordinates already submitted" printed to terminal before boards are loaded.
+- when nothing is input into player_board_reset input, the game continues rather than asking for another answer.
+- when nothing is input into the row/column input an index error is returned.
 
 ## 5. Deployment
 

@@ -200,6 +200,7 @@ def player_guess():
     while COMPUTER_SHIP_COUNT > 0:
         computer_guess()
     end_game()
+    return
 
 
 def computer_guess():
