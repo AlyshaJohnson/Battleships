@@ -259,11 +259,11 @@ def end_game():
 if __name__ == "__main__":
     while GAME_OVER is False:
         print("             <====>  Welcome to Battleships!  <====>")
-        print("The aim of the game is to sink your opponents battleships \
-            before they sink yours!")
+        print("The aim of the game is to sink your opponents battleships before they sink yours!")  # noqa
         name = input("Who is taking on this challenge? (Enter name): \n")
         print("Good to have you on board, " + name + "!")
         print("Here are the rules:")
+        print("-----------------------------------------------------------------------")  # noqa
         print("   <==>   Rules   <==>")
         print("1. You will be playing against the computer.")
         print("2. A board will be randomly generated for you and your oponent.")  # noqa
@@ -278,7 +278,7 @@ if __name__ == "__main__":
         print("  <> - ship of length 2 cells, each player gets 1 of these")
         print("  <=> - ship of length 3 cells, each player gets 1 of these")
         print("  <==> - ship of length 4 cells, each player gets 1 of these")
-        print("______________________________________________________________")
+        print("-----------------------------------------------------------------------")  # noqa
         place_ships(player_ship_board, player_1)
         place_ships(computer_ship_board, player_2)
         load_board(player_guess_board, player_ship_board)
