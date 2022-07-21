@@ -242,6 +242,7 @@ UI improvement suggestions:
 Errors / bug fixes:
 - some coordinates not printing onto player_guess_board
 - "coordinates already submitted" printed to terminal between boards
+- game does not restart when asked if they want to start a new game
 
 The improvements and fixes that were made were adjustments to the input description and writing more descriptive instructions. Additionally, the bug relating to some coordinates not printing onto the player_guess_board was due to the reference symbols in the if loop not being correct and therefore no 'X' appearing in the board.
 
@@ -252,6 +253,7 @@ From all the testing completed, there are only two known bugs that have not been
 - "coordinates already submitted" printed to terminal before boards are loaded.
 - when nothing is input into player_board_reset input, the game continues rather than asking for another answer.
 - when nothing is input into the row/column input an index error is returned.
+- game does not restart when asked if they want to start a new game
 
 ## 5. Deployment
 
