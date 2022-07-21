@@ -214,7 +214,7 @@ Scenario 9 returned 2 bugs:
 
 As these bugs found during scenario 9 were found 90 mins before go-live, they have been captured as known bugs and will be updated in a future release.
 
-**Browser Tesing**
+**Browser Testing**
 
 The development of this app was conducted on Google Chrome, therefore extensive testing was conducted on this browser. This was used as a benchmark against Firefox and Safari.
 

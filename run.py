@@ -262,7 +262,6 @@ def end_game():
 
 
 if __name__ == "__main__":
-    global GAME_OVER
     while GAME_OVER is False:
         print("               <====>  Welcome to Battleships!  <====>")
         print("The aim of the game is to sink your opponents battleships before they")  # noqa
