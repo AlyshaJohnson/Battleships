@@ -143,7 +143,6 @@ def load_board(guess_board, ship_board):
         print("%d|%s|" % (row_number, "|".join(row)))
         row_number += 1
     print(" -----------------")
-    print("No. of ships left: " + str(PLAYER_SHIPS_COUNT))
     print("<-> GUESS BOARD <->")
     print("  A B C D E F G H")
     print(" -----------------")
@@ -153,6 +152,7 @@ def load_board(guess_board, ship_board):
         row_number += 1
     print(" -----------------")
     print("Number of enemy ships left: " + str(COMPUTER_SHIP_COUNT))
+    print("No. of ships left: " + str(PLAYER_SHIPS_COUNT))
     print("No. of missiles launched: " + str(PLAYER_GUESS_COUNT))
 
 
@@ -259,8 +259,8 @@ def end_game():
 if __name__ == "__main__":
     while GAME_OVER is False:
         print("                     <====>  Welcome to Battleships!  <====>")
-        print("       The aim of the game is to sink your opponents battleships before they")  # noqa
-        print("       sink yours!")
+        print("The aim of the game is to sink your opponents battleships before they")  # noqa
+        print("sink yours!")
         print("-----------------------------------------------------------------------")  # noqa
         name = input("Who is taking on this challenge? (Enter name): \n")
         print("Good to have you on board, " + name + "!")
